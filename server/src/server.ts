@@ -1,21 +1,12 @@
-import express from "express";
-import { createServer } from "http";
+const app = require("express")();
+const server = require("http").createServer(app);
+const io = require("socket.io")(server);
+const port = process.env.PORT || 8080;
 
-function boot(port: number) {
-    const app = express();
-    const server = createServer(app);
+app.get("/", function (req: any, res: { send: (arg0: string) => void }) {
+    res.send("Hello");
+});
 
-    app.get("/", (req, res) => {
-        return res.send("Server is on");
-    });
-
-    app.all("*", (req, res) => {
-        return res.send("Not Found");
-    });
-
-    server.listen(port, () => {
-        console.log("Server is running at port", port);
-    });
-}
-
-boot(4000);
+server.listen(port, function () {
+    console.log(`Listening on port ${port}`);
+});
